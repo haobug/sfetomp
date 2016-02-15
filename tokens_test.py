@@ -17,6 +17,10 @@ class AccessTokensTest(unittest.TestCase):
         print obj2
         self.assertNotEqual(obj, obj2)
 
+        obj3 = tokens.AccessToken()
+        obj3.token_load("token6.json")
+        print obj3
+        self.assertEqual(obj, obj3)
 
 if __name__ == '__main__':
     unittest.main()
