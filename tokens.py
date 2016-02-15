@@ -1,27 +1,36 @@
-#coding: utf-8
+# coding: utf-8
 import requests
 import os
 import json
 import time
 import sys
 
-api_base="https://api.weixin.qq.com/cgi-bin/"
-class AccessToken:
+# TODO: take appid, secret, filename to a template or config file
+# func argument from template func
 
-    def get_url(self, **kwargs):
-        url = api_base + 'token' #TODO, auto chop, and include other type of url
+api_base = "https://api.weixin.qq.com/cgi-bin/"
+
+
+class AccessToken:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def get_url(**kwargs):
+        url = api_base + 'token'  # TODO, auto chop, and include other type of url
         i = 0
-        for k,v in kwargs.iteritems():
+        for k, v in kwargs.iteritems():
             if i == 0:
                 url += '?'
             else:
                 url += '&'
 
             url += "%s=%s" % (k, v)
-            i += 1 # buggy
+            i += 1  # buggy
         return url
 
-    def token_expired(self, obj):
+    @staticmethod
+    def token_expired(obj):
         expire = float(obj['update_time']) + float(obj['expires_in'])
         return expire < time.time()
 
@@ -37,26 +46,30 @@ class AccessToken:
 
     def get_access_token(self, appid, secret, filename):
         obj = self.token_load(filename)
-        #self.assertTrue(obj != None)
+        # self.assertTrue(obj != None)
         if obj and not self.token_expired(obj):
             return obj
         else:
             return self.request_token(appid, secret, filename)
 
-    def token_save(self, obj, filename):
+    @staticmethod
+    def token_save(obj, filename):
         fp = open(filename, "wb")
         json.dump(obj, fp)
         fp.close()
 
-    def token_load(self, filename):
+    @staticmethod
+    def token_load(filename):
         fp = None
         try:
             fp = open(filename, "rb")
             obj = json.load(fp)
             fp.close()
             return obj
-        except IOError as e: #TODO: fix error judge output
-            print "fail:", e
+        except IOError as e:  # TODO: fix error judge output
+            # return e.error
+            # print("I/O error({0}): {1}".format(e.errno, e.strerror)
+            print("fail:", e.message)
         finally:
-            print "ok"
-            #return obj
+            print("ok")
+            # return obj

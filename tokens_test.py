@@ -1,17 +1,17 @@
-#coding: utf-8
+# coding: utf-8
 import unittest
 import tokens
 
-class AccessTokens(unittest.TestCase):
 
+class AccessTokensTest(unittest.TestCase):
     def test_get_access_token(self):
-        tokenfile = "token9.json"
+        tokenfile = "token6.json"
         obj = tokens.AccessToken()
         obj.get_access_token(
-               appid="",    #fill
-               secret="",   #fill
-               filename=tokenfile
-               )
+            appid="",  # fill
+            secret="",  # fill
+            filename=tokenfile
+        )
         obj2 = tokens.AccessToken()
         obj2.token_load("token.json")
         print obj2
