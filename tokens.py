@@ -31,6 +31,8 @@ class AccessToken:
 
     @staticmethod
     def token_expired(obj):
+        if not (obj.has_key("update_time") and obj.has_key("expires_in")):
+            return True #expired
         expire = float(obj['update_time']) + float(obj['expires_in'])
         return expire < time.time()
 
